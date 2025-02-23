@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -7,9 +8,118 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='900' preserveAspectRatio='none' viewBox='0 0 1440 900'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1127%26quot%3b)' fill='none'%3e%3crect width='1440' height='900' x='0' y='0' fill='rgba(89%2c 171%2c 255%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c393.131C84.974%2c392.288%2c177.433%2c433.247%2c249.73%2c388.588C322.123%2c343.87%2c321.942%2c239.957%2c365.907%2c167.104C417.524%2c81.571%2c550.383%2c21.613%2c530.242%2c-76.237C509.662%2c-176.222%2c347.842%2c-166.336%2c281.333%2c-243.777C214.323%2c-321.801%2c250.641%2c-488.547%2c151.778%2c-516.908C52.651%2c-545.344%2c-7.899%2c-391.633%2c-104.04%2c-354.329C-187.713%2c-321.863%2c-293.262%2c-370.165%2c-365.093%2c-316.355C-439.689%2c-260.473%2c-465.772%2c-160.989%2c-484.117%2c-69.606C-503.226%2c25.581%2c-515.216%2c128.624%2c-471.859%2c215.491C-428.98%2c301.399%2c-342.79%2c359.744%2c-252.933%2c393.572C-172.397%2c423.891%2c-86.05%2c393.984%2c0%2c393.131' fill='%231186ff'%3e%3c/path%3e%3cpath d='M1440 1470.887C1545.222 1474.484 1630.296 1389.546 1711.717 1322.799 1785.47 1262.338 1850.213 1192.134 1887.241 1104.248 1923.558 1018.051 1914.686 924.593 1918.859 831.151 1924.058 714.729 1995.042 573.0899999999999 1914.734 488.641 1833.311 403.019 1685.972 474.574 1568.42 462.642 1477.046 453.367 1392.344 417.562 1300.92 426.336 1193.93 436.604 1063.965 432.184 998.3969999999999 517.3489999999999 932.466 602.986 990.4100000000001 726.785 986.453 834.79 983.002 928.97 940.733 1024.476 976.624 1111.617 1012.95 1199.812 1104.586 1246.1770000000001 1179.966 1304.621 1262.953 1368.964 1335.052 1467.299 1440 1470.887' fill='%23a1d0ff'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1127'%3e%3crect width='1440' height='900' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");  
+  height: 100%;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+* {
+  font-family: "Nunito", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.nunito-bold {
+  font-family: "Nunito", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.navbar-bg {
+  background-color: rgba(96, 197, 246, 0); /* 80% opacity */
+}
+
+.arrow {
+  padding: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  color:white;
+  transition: all 0.3s;
+}
+
+.arrow:hover {
+  cursor: pointer;
+  border-width: 0 9px 9px 0;
+}
+
+.glowing-text {
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+}
+
+@keyframes swipe-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
   }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.swipe-down {
+  animation: swipe-down 0.5s ease-out forwards;
+}
+
+.card-bg {
+  background-color: rgba(35, 0, 0, 0.25); 
+  color: rgba(35, 0, 0, 0.25);
+}
+
+.react-multiple-carousel__arrow{
+  z-index: 30 !important;
+}
+
+.gallery-card-bg {
+  background-color: #282828;
+}
+
+.gallery-bg {
+  background-color: #383137;
+}
+
+.bg-gallery {
+  background:#60c5f6;
+}
+
+.bg-inputs {
+  background-color: #eb98f9;
+}
+
+.card-shadow {
+  box-shadow: 0px -0px 5px 6px rgba(255,255,255,0.1);
+  -webkit-box-shadow: 0px -0px 5px 6px rgba(255,255,255,0.1);
+  -moz-box-shadow: 0px -0px 5px 6px rgba(255,255,255,0.1);
+}
+
+.glowing-gallery {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e3a3df, 0 0 20px #e3a3df, 0 0 25px #e3a3df, 0 0 30px #e3a3df, 0 0 35px #e3a3df;
+}
+
+.drop-design {
+  position: relative;
+}
+
+.drop-design::after {
+  content: '';
+  position: absolute;
+  bottom: 50px; /* Adjust this value to position the drop design */
+  left: 5%;
+  transform: translateX(-50%);
+  width: 1000px; /* Adjust the width of the drop design */
+  height: 1000px; /* Adjust the height of the drop design */
+  background-color: #eb98f9; /* Adjust the color of the drop design */
+  border-radius: 50% 50% 0 0; /* Create the drop shape */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for a more appealing design */
+}
+
+.text-shadow {
+  text-shadow: 0px 4px 2px rgba(0,0,0,1);
+}
+.bg-sidebar {
+  background: #8ac8f8;
 }
