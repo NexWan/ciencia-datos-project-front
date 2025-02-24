@@ -88,6 +88,14 @@ body {
 
 .bg-inputs {
   background-color: #eb98f9;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.bg-inputs:hover {
+  background-color: #e3a3df;
+  scale: 1.2;
+  cursor: pointer;
 }
 
 .card-shadow {

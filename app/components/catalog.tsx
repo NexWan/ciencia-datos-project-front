@@ -22,6 +22,7 @@ export default function Catalog() {
   const [capturedImage, setCapturedImage] = useState("");
   const webcamRef: any = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedTag, setSelectedTag] = useState("");
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -108,6 +109,14 @@ export default function Catalog() {
   useEffect(() => {
     console.log("Products updated:", products);
   }, [products]);
+
+  const handleTagChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTag(event.target.value);
+  };
+
+  const filteredProducts = selectedTag
+    ? products.filter((product) => product.tags[0].toLowerCase().includes(selectedTag))
+    : products;
 
   return (
     <div
@@ -199,10 +208,13 @@ export default function Catalog() {
         </div>
         <div className="w-full flex flex-col items-center justify-items-normal">
           <span className="text-white text-3xl mt-3">Tags</span>
-          <select className="bg-inputs text-white shadow-md text-2xl px-5 py-2 rounded-lg mt-5">
+          <select className="bg-inputs text-white shadow-md text-2xl px-5 py-2 rounded-lg mt-5" onChange={handleTagChange}>
             <option value="">All</option>
-            <option value="">Weird</option>
-            <option value="">Normal</option>
+            <option value="cars">Cars</option>
+            <option value="toys">Toys</option>
+            <option value="gpu">GPU</option>
+            <option value="cpu">CPU</option>
+            <option value="phones">Phones</option>
           </select>
         </div>
         <div className="w-full flex flex-col items-center justify-items-normal">
@@ -224,8 +236,8 @@ export default function Catalog() {
           Add product
         </button>
         <div className=" overflow-y-scroll w-5/6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 max-h-full">
-          {products.length > 0 ? (
-            products.map((product, i) => (
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product, i) => (
               <div key={i} className="hover:cursor-pointer hover:scale-105 hover:shadow-lg hover:transition-all" onClick={() => setSelectedProduct(product)}>
                 <img
                   src={product.image}
@@ -238,6 +250,9 @@ export default function Catalog() {
                     {product.description}
                   </span>
                   <span className="text-black text-xl">${product.price}</span>
+                  <span className="text-white bg-inputs px-5 text-sm p-1 rounded-lg">
+                    {product.tags[0]}
+                  </span>
                 </div>
               </div>
             ))

@@ -29,3 +29,17 @@ export async function getProductsFromServer() {
     const data = await response.json()
     return data
 } 
+
+export async function updateProduct(product: Product) {
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('description', product.description);
+    formData.append('price', product.price.toString());
+    formData.append('image', product.image);
+    formData.append('tag', product.tags[0]);
+    const result = await fetch(`http://localhost:8000/products/${product.id}`, {
+        method: 'PUT',
+        body: formData
+    });
+    return await result.json() as Product;
+}
