@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Webcam from "react-webcam";
 import Card from "~/custom/Card";
@@ -7,15 +6,15 @@ import dataURLtoFile from "~/utils/functions";
 import {
   loader,
   postProduct,
-  getImagesFromServer,
   getProductsFromServer,
 } from "~/utils/fetchDB";
 import type { Product } from "~/utils/Product";
 import ProductCard from "./productCard";
+import { useProductContext } from "~/contexts/productContext";
 
 export default function Catalog() {
   const [animate, setAnimate] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products, setProducts } = useProductContext();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [webcamActive, setWebcamActive] = useState(false);
@@ -23,6 +22,7 @@ export default function Catalog() {
   const webcamRef: any = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedTag, setSelectedTag] = useState("");
+  const [maxPrice, setMaxPrice] = useState(0);
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -50,8 +50,13 @@ export default function Catalog() {
   };
 
   useEffect(() => {
-    setAnimate(true);
-    fetchProducts();
+    const fetchData = async () => {
+      setAnimate(true);
+      await fetchProducts();
+      setMaxPrice(Math.max(...products.map((product) => product.price)));
+      console.log(maxPrice);
+    };
+    fetchData();
   }, []);
 
   const fetchProducts = async () => {
@@ -202,7 +207,7 @@ export default function Catalog() {
       {selectedProduct && (
         <ProductCard product={selectedProduct} onClose={() => handleClose()} />
       )}
-      <div className="w-1/6 bg-sidebar flex flex-col items-center justify-start h-full shadow-lg shadow-black">
+      <div className="w-1/6 bg-sidebar overflow-scroll flex flex-col items-center justify-start h-full shadow-lg shadow-black">
         <div className="w-full flex flex-col items-center justify-items-normal mt-5">
           <span className="text-white text-4xl nunito-bold">Filters</span>
         </div>
@@ -217,7 +222,7 @@ export default function Catalog() {
             <option value="phones">Phones</option>
           </select>
         </div>
-        <div className="w-full flex flex-col items-center justify-items-normal">
+        {/*<div className="w-full flex flex-col items-center justify-items-normal">
           <span className="text-white text-3xl mt-3">Price</span>
           <input
             type="range"
@@ -226,7 +231,8 @@ export default function Catalog() {
         </div>
         <button className="bg-inputs shadow-md text-white text-2xl bottom-5 px-5 py-2 rounded-lg mt-5 hover:cursor-pointer hover:scale-105 transition-all">
           Apply
-        </button>
+        </button>*/
+        }
       </div>
       <div className="w-5/6 flex flex-col items-center justify-start h-full">
         <button
@@ -238,13 +244,13 @@ export default function Catalog() {
         <div className=" overflow-y-scroll w-5/6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 max-h-full">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product, i) => (
-              <div key={i} className="hover:cursor-pointer hover:scale-105 hover:shadow-lg hover:transition-all" onClick={() => setSelectedProduct(product)}>
+              <div key={i} className="hover:cursor-pointer shadow-xl hover:scale-105 hover:shadow-lg hover:transition-all" onClick={() => setSelectedProduct(product)}>
                 <img
                   src={product.image}
-                  className="w-full h-64 object-cover rounded-lg"
+                  className="w-full h-64 object-cover rounded-t-lg"
                   alt="product"
                 />
-                <div className="bg-white p-4 rounded-lg flex flex-col items-center justify-center">
+                <div className="bg-gray-300 shadow-lg p-4 rounded-b-lg flex flex-col items-center justify-center">
                   <span className="text-black text-2xl">{product.name}</span>
                   <span className="text-black text-lg">
                     {product.description}

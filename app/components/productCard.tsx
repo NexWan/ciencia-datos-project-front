@@ -1,11 +1,30 @@
 import React, { useState } from 'react'
 import Card from '~/custom/Card'
 import type { Product } from '~/utils/Product'
-import { FaPencil } from "react-icons/fa6";
-import { updateProduct } from '~/utils/fetchDB';
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
+import { updateProduct, deleteProduct } from '~/utils/fetchDB';
+import { useProductContext } from '~/contexts/productContext';
+import { useConfirmation } from '~/contexts/confirmationContext';
+import Popup from '~/custom/Popup';
 
 function ProductCard({product, onClose}: {product: Product, onClose: () => void}) {
+  const { products, setProducts } = useProductContext()
   const [isEditing, setIsEditing] = useState(false)
+  const {confirmation, setConfirmation} = useConfirmation()
+  const [isDeleting, setIsDeleting] = useState(false)
+  React.useEffect(() => {
+    console.log('Confirmation:', confirmation)
+    setConfirmation(false)
+  }, []);
+
+  React.useEffect(() => {
+    console.log("Confirmation updated:", confirmation)
+    if (confirmation) {
+      handleDelete()
+      setIsDeleting(false)
+    }
+  }
+  , [confirmation]);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -19,10 +38,37 @@ function ProductCard({product, onClose}: {product: Product, onClose: () => void}
     }
     console.log(await updateProduct(updatedProduct));
     setIsEditing(false)
-    
+    setProducts(products.map(p => p.id === product.id ? updatedProduct : p))
+    product = updatedProduct
+  }
+
+  const closePopup = () => {
+    setIsDeleting(false)
+  }
+
+  React.useEffect(() => {
+    console.log('Products updated:', products)
+  }, [products]);
+
+  const handleDelete = async () => {
+    console.log('Delete product')
+    const id = product.id
+    console.log(await deleteProduct(id))
+    setProducts(products.filter(p => p.id !== id))
+    setConfirmation(false)
+    onClose()
+  }
+
+  const openPopup = () => {
+    setIsDeleting(true)
   }
   return (
     <Card className="w-64 h-max gallery-card-bg" onClose={onClose}>
+      {isDeleting && (
+        <Popup onClose={closePopup}>
+          <h2 className="text-xl text-white">Are you sure you want to delete this product?</h2>
+          </Popup>
+      )}
         <div className="flex flex-col items-center justify-center">
           <img src={product.image} alt={product.name} className="w-16 h-16 rounded-full" />
           {!isEditing && (
@@ -33,9 +79,6 @@ function ProductCard({product, onClose}: {product: Product, onClose: () => void}
               <p className='text-sm text-white bg-inputs rounded-full px-2 py-1 font-semibold'>{product.tags[0]}</p>
             </>
           )}
-            <button onClick={() => setIsEditing(!isEditing)} className="text-white bg-inputs hover:bg-blue-700 p-2 rounded-full">
-                <FaPencil />
-            </button>
             {isEditing && (
                 <form className="flex flex-col items-center justify-center" onSubmit={handleSubmit}>
                     <span className="text-white text-xl">Name</span>
@@ -75,6 +118,14 @@ function ProductCard({product, onClose}: {product: Product, onClose: () => void}
                       </button>
               </form>
               )}
+         <div className="flex justify-center items-center space-x-2">
+          <button onClick={() => setIsEditing(!isEditing)} className="text-white bg-inputs hover:bg-blue-700 p-2 rounded-full">
+                <FaPencil />
+            </button>
+            <button className="text-white bg-inputs  p-2 rounded-full" onClick={() => openPopup()}>
+                <FaRegTrashCan />
+            </button>
+          </div>
         </div>
     </Card>
   )

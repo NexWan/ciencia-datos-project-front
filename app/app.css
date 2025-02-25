@@ -131,3 +131,12 @@ body {
 .bg-sidebar {
   background: #8ac8f8;
 }
+
+.card-desc-bg {
+  background-color: #8e9093;
+}
+
+.bg-logo {
+  background-color: #d2eafc;
+  box-shadow: 50px 50px 100px #8ac8f8, -50px -50px 100px #8ac8f8;
+}

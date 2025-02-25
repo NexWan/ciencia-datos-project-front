@@ -43,3 +43,10 @@ export async function updateProduct(product: Product) {
     });
     return await result.json() as Product;
 }
+
+export async function deleteProduct(id: number) {
+    const result = await fetch(`http://localhost:8000/products/${id}`, {
+        method: 'DELETE'
+    });
+    return await result.json();
+}
